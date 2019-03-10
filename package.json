@@ -1,0 +1,21 @@
+{
+  "name": "job-board-dev",
+  "version": "0.0.1",
+  "description": "Remote work job board for Software Developers.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "Colby Miller",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.18"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
