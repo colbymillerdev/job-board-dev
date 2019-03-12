@@ -31,7 +31,7 @@ export default class Home extends Component {
         <Container>
           <Header>Remote Work for Devs!</Header>
           <SubHeader>
-            Looking for an awesome job you can work from anywhere in the world? This is the perfect place!
+            Looking for an awesome job that you can work from anywhere in the world? This is the perfect place!
           </SubHeader>
           <Grid>
             <Grid.Column textAlign="center">
