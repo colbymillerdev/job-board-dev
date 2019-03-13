@@ -3,6 +3,9 @@ import { Step, Container, Form, Button } from 'semantic-ui-react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import EmployerInfoForm from '../../components/EmployerInfoForm';
+import JobDescForm from '../../components/JobDescForm';
+
 export default class Employer extends Component {
   state = {
     activeStep: 'info',
@@ -12,7 +15,10 @@ export default class Employer extends Component {
     empName: '',
     empWebsite: '',
     empHeadquarters: '',
-    empDescription: ''
+    empDescription: '',
+    jobTitle: '',
+    estSalary: '',
+    jobAppUrl: ''
   };
 
   handleNextClick = async () => {
@@ -24,7 +30,7 @@ export default class Employer extends Component {
     };
 
     try {
-      await axios.post('/api/employer', employerInfo);
+      // await axios.post('/api/employer', employerInfo);
 
       this.setState({ activeStep: 'description', infoCompleted: true, descriptionDisabled: false });
     } catch (err) {
@@ -34,6 +40,26 @@ export default class Employer extends Component {
 
   handleFormInput = event => {
     this.setState({ [event.target.name]: event.target.value });
+  };
+
+  handleBackClick = () => {
+    this.setState({ activeStep: 'info', infoCompleted: false, descriptionDisabled: true });
+  };
+
+  handlePostClick = async () => {
+    const jobDesc = {
+      jobTitle: this.state.jobTitle,
+      estSalary: this.state.estSalary,
+      jobAppUrl: this.state.jobAppUrl
+    };
+
+    try {
+      // await axios.post('/api/job', jobDesc);
+
+      this.setState({ descriptionCompleted: true });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   componentDidMount() {}
@@ -64,44 +90,13 @@ export default class Employer extends Component {
         <Container>
           <Step.Group items={steps} widths={2} style={{ marginBottom: 30 }} />
           {this.state.activeStep === 'info' ? (
-            <Form>
-              <Form.Group widths="equal">
-                <Form.Input
-                  fluid
-                  label="Name"
-                  placeholder="Company Name"
-                  name="empName"
-                  onChange={this.handleFormInput}
-                />
-                <Form.Input
-                  fluid
-                  label="Website"
-                  placeholder="myawesomecompany.com"
-                  name="empWebsite"
-                  onChange={this.handleFormInput}
-                />
-                <Form.Input
-                  fluid
-                  label="Headquarters"
-                  placeholder="San Francisco, California"
-                  name="empHeadquarters"
-                  onChange={this.handleFormInput}
-                />
-              </Form.Group>
-              <Form.Group widths="equal">
-                <Form.TextArea
-                  label="Description"
-                  placeholder="Tell us more about the company..."
-                  name="empDescription"
-                  onChange={this.handleFormInput}
-                />
-              </Form.Group>
-              <Button floated="right" primary size="large" onClick={this.handleNextClick}>
-                Next
-              </Button>
-            </Form>
+            <EmployerInfoForm onChange={this.handleFormInput} onClick={this.handleNextClick} />
           ) : (
-            <h1>Job description</h1>
+            <JobDescForm
+              onChange={this.handleFormInput}
+              onBackClick={this.handleBackClick}
+              onPostClick={this.handlePostClick}
+            />
           )}
         </Container>
       </Wrapper>
