@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const JobPostSchema = new Schema({
+const EmployerSchema = new Schema({
   name: {
     type: String
   },
@@ -20,4 +20,4 @@ const JobPostSchema = new Schema({
   }
 });
 
-module.exports = JobPost = mongoose.model('JobPost', JobPostSchema);
+module.exports = Employer = mongoose.model('Employer', EmployerSchema);

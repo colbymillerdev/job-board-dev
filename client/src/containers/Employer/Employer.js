@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
 import { Step, Container, Form, Button } from 'semantic-ui-react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 export default class Employer extends Component {
   state = {
     activeStep: 'info',
     infoCompleted: false,
     descriptionCompleted: false,
-    descriptionDisabled: true
+    descriptionDisabled: true,
+    empName: '',
+    empWebsite: '',
+    empHeadquarters: '',
+    empDescription: ''
   };
 
-  handleNextClick = () => {
-    this.setState({ activeStep: 'description', infoCompleted: true, descriptionDisabled: false });
+  handleNextClick = async () => {
+    const employerInfo = {
+      name: this.state.empName,
+      website: this.state.empWebsite,
+      headquarters: this.state.empHeadquarters,
+      description: this.state.empDescription
+    };
+
+    try {
+      await axios.post('/api/employer', employerInfo);
+
+      this.setState({ activeStep: 'description', infoCompleted: true, descriptionDisabled: false });
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  handleFormInput = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  componentDidMount() {}
 
   render() {
     const steps = [
@@ -42,12 +66,35 @@ export default class Employer extends Component {
           {this.state.activeStep === 'info' ? (
             <Form>
               <Form.Group widths="equal">
-                <Form.Input fluid label="Name" placeholder="Company Name" />
-                <Form.Input fluid label="Website" placeholder="myawesomecompany.com" />
-                <Form.Input fluid label="Headquarters" placeholder="San Francisco, California" />
+                <Form.Input
+                  fluid
+                  label="Name"
+                  placeholder="Company Name"
+                  name="empName"
+                  onChange={this.handleFormInput}
+                />
+                <Form.Input
+                  fluid
+                  label="Website"
+                  placeholder="myawesomecompany.com"
+                  name="empWebsite"
+                  onChange={this.handleFormInput}
+                />
+                <Form.Input
+                  fluid
+                  label="Headquarters"
+                  placeholder="San Francisco, California"
+                  name="empHeadquarters"
+                  onChange={this.handleFormInput}
+                />
               </Form.Group>
               <Form.Group widths="equal">
-                <Form.TextArea label="Description" placeholder="Tell us more about the company..." />
+                <Form.TextArea
+                  label="Description"
+                  placeholder="Tell us more about the company..."
+                  name="empDescription"
+                  onChange={this.handleFormInput}
+                />
               </Form.Group>
               <Button floated="right" primary size="large" onClick={this.handleNextClick}>
                 Next

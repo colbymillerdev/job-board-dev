@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const jobPosts = require('./routes/jobPosts');
+const employer = require('./routes/employer');
 
 const app = express();
 
@@ -20,7 +20,7 @@ mongoose
   .catch(err => console.log(err));
 
 // Routes
-app.use('/api/job-posts', jobPosts);
+app.use('/api/employer', employer);
 
 const port = process.env.PORT || 5000;
 
