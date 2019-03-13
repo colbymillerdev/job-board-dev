@@ -20,4 +20,15 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const employers = await Employer.find();
+    console.log(employers);
+
+    res.json(employers);
+  } catch (err) {
+    res.status(404).json({ notfound: 'Employer data can not be found.' });
+  }
+});
+
 module.exports = router;
