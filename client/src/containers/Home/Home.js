@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Container, Segment, List, Button, Grid, Image } from 'semantic-ui-react';
+import { Container, Segment, List, Button, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import moment from 'moment';
 
-import profilePic from '../../assets/profileimg.jpg';
+import JobListItem from '../../components/JobListItem';
 
 const Header = styled.div`
   font-size: 48px;
@@ -25,6 +27,17 @@ const SubHeader = styled.div`
 `;
 
 export default class Home extends Component {
+  state = {
+    jobs: [],
+    employers: []
+  };
+
+  async componentDidMount() {
+    const res = await axios.get('/api/job-description');
+    const empRes = await axios.get('/api/employer/');
+    this.setState({ jobs: res.data, employers: empRes.data });
+  }
+
   render() {
     return (
       <div>
@@ -44,42 +57,17 @@ export default class Home extends Component {
           </Grid>
           <Segment inverted>
             <List animated divided inverted relaxed verticalAlign="middle" size="big">
-              <List.Item>
-                <Image avatar src={profilePic} />
-                <List.Content>
-                  <List.Header as="a">Google | UI/UX Designer</List.Header>
-                  <List.Description>Posted 4 hours ago</List.Description>
-                </List.Content>
-                <List.Content floated="right">
-                  <Button primary size="medium">
-                    Apply
-                  </Button>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <Image avatar src={profilePic} />
-                <List.Content>
-                  <List.Header>Slack | Full Stack Engineer</List.Header>
-                  <List.Description>Posted 1 day ago</List.Description>
-                </List.Content>
-                <List.Content floated="right">
-                  <Button primary size="medium">
-                    Apply
-                  </Button>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <Image avatar src={profilePic} />
-                <List.Content>
-                  <List.Header>Facebook | Software Engineer</List.Header>
-                  <List.Description>Posted 3 days ago</List.Description>
-                </List.Content>
-                <List.Content floated="right">
-                  <Button primary size="medium">
-                    Apply
-                  </Button>
-                </List.Content>
-              </List.Item>
+              {this.state.jobs.map(job => {
+                const emp = this.state.employers.find(e => e._id === job.empId);
+                return (
+                  <JobListItem
+                    companyName={emp.name}
+                    jobTitle={job.jobTitle}
+                    postedDt={moment(job.createdAt).fromNow()}
+                    key={job._id}
+                  />
+                );
+              })}
             </List>
           </Segment>
         </Container>

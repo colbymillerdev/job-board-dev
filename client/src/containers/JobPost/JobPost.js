@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Step, Container, Form, Button } from 'semantic-ui-react';
+import { Step, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -18,7 +18,8 @@ export default class Employer extends Component {
     empDescription: '',
     jobTitle: '',
     estSalary: '',
-    jobAppUrl: ''
+    jobAppUrl: '',
+    empId: ''
   };
 
   handleNextClick = async () => {
@@ -30,9 +31,15 @@ export default class Employer extends Component {
     };
 
     try {
-      // await axios.post('/api/employer', employerInfo);
+      const res = await axios.post('/api/employer', employerInfo);
+      console.log(res);
 
-      this.setState({ activeStep: 'description', infoCompleted: true, descriptionDisabled: false });
+      this.setState({
+        activeStep: 'description',
+        infoCompleted: true,
+        descriptionDisabled: false,
+        empId: res.data._id
+      });
     } catch (err) {
       console.log(err);
     }
@@ -50,13 +57,15 @@ export default class Employer extends Component {
     const jobDesc = {
       jobTitle: this.state.jobTitle,
       estSalary: this.state.estSalary,
-      jobAppUrl: this.state.jobAppUrl
+      jobAppUrl: this.state.jobAppUrl,
+      empId: this.state.empId
     };
 
     try {
-      // await axios.post('/api/job', jobDesc);
+      await axios.post('/api/job-description', jobDesc);
 
       this.setState({ descriptionCompleted: true });
+      this.props.history.push('/');
     } catch (err) {
       console.log(err);
     }

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Button } from 'semantic-ui-react';
+import { FilePond } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
 
 const JobDescForm = ({ onChange, onBackClick, onPostClick }) => (
   <Form>
@@ -14,6 +16,7 @@ const JobDescForm = ({ onChange, onBackClick, onPostClick }) => (
         onChange={onChange}
       />
     </Form.Group>
+    <FilePond server="/api/job-description/upload" />
     <Button floated="left" secondary onClick={onBackClick}>
       Back
     </Button>
