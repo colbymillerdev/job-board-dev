@@ -1,2 +1,5 @@
 # job-board-dev
-Remote job board for Software Developers and Engineers
+
+** In-Progress Personal Project **
+
+Remote job board for Software Developers and Engineers. Built using React, Node, and MongoDB.
