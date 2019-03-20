@@ -32,7 +32,6 @@ export default class Employer extends Component {
 
     try {
       const res = await axios.post('/api/employer', employerInfo);
-      console.log(res);
 
       this.setState({
         activeStep: 'description',

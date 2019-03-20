@@ -14,7 +14,7 @@ const JobListItem = ({ companyName, jobTitle, postedDt, applyUrl }) => {
         <List.Description>Posted {postedDt}</List.Description>
       </List.Content>
       <List.Content floated="right">
-        <Button primary size="medium">
+        <Button primary size="medium" as="a" href={`https://${applyUrl}`} target="_blank">
           Apply
         </Button>
       </List.Content>

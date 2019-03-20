@@ -64,6 +64,7 @@ export default class Home extends Component {
                     companyName={emp.name}
                     jobTitle={job.jobTitle}
                     postedDt={moment(job.createdAt).fromNow()}
+                    applyUrl={job.jobAppUrl}
                     key={job._id}
                   />
                 );

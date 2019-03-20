@@ -1,19 +1,52 @@
 const express = require('express');
 const router = express.Router();
+const AWS = require('aws-sdk');
+const fs = require('fs');
 
 const JobDescription = require('../models/JobDescription');
+const keys = require('../config/keys');
+
+//configuring the AWS environment
+AWS.config.update({
+  accessKeyId: keys.accessKeyId,
+  secretAccessKey: keys.secretAccessKey
+});
+const s3 = new AWS.S3();
 
 router.post('/upload', (req, res) => {
   let uploadFile = req.files.filepond;
   const fileName = req.files.filepond.name;
-  uploadFile.mv(`${__dirname}/tmp/job-description/${fileName}`, function(err) {
+  const filePath = `${__dirname}/tmp/job-description/${fileName}`;
+
+  uploadFile.mv(filePath, err => {
     if (err) {
-      console.log(err);
-      return res.status(500).send(err);
+      return res.status(500).json({ uploaderror: 'There was an error uploading the file.' });
     }
 
-    res.json({
-      file: `tmp/job-description/${req.files.filepond.name}`
+    // Configure s3 parameters.
+    const params = {
+      Bucket: 'job-board-dev',
+      Body: fs.createReadStream(filePath),
+      Key: `job-descriptions/${Date.now()}_${req.files.filepond.name}`
+    };
+
+    s3.upload(params, (err, data) => {
+      if (err) {
+        return res.status(500).json({ s3error: 'There was an error uploading the file to s3.' });
+      }
+
+      if (data) {
+        // Store uploaded url.
+        this.s3Url = data.Location;
+        // Remove file from tmp dir after upload to s3.
+        fs.unlink(filePath, err => {
+          if (err) {
+            res.json({ unlinkerror: 'Error removing file from tmp location.' });
+          }
+        });
+
+        return res.json({ success: 'File uploaded successfully.' });
+      }
     });
   });
 });
@@ -24,7 +57,8 @@ router.post('/', async (req, res) => {
       jobTitle: req.body.jobTitle,
       estSalary: req.body.estSalary,
       jobAppUrl: req.body.jobAppUrl,
-      empId: req.body.empId
+      empId: req.body.empId,
+      awsUploadUrl: this.s3Url
     };
 
     const response = await new JobDescription(jobDesc).save();
