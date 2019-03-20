@@ -48,11 +48,11 @@ export default class Home extends Component {
           </SubHeader>
           <Grid>
             <Grid.Column textAlign="center">
-              <Button style={{ marginBottom: 30, justifyContent: 'center' }} primary size="medium">
-                <Link to="/employer/post-job" style={{ color: 'white' }}>
+              <Link to="/employer/post-job" style={{ color: 'white' }}>
+                <Button style={{ marginBottom: 30, justifyContent: 'center' }} primary size="medium">
                   Employer? Post a job!
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </Grid.Column>
           </Grid>
           <Segment inverted>

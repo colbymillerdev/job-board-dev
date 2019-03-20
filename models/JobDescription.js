@@ -18,7 +18,7 @@ const JobDescriptionSchema = new Schema({
     type: String,
     required: true
   },
-  awsUploadUrl: {
+  awsUploadKey: {
     type: String
   },
   createdAt: {

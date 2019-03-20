@@ -37,11 +37,11 @@ router.post('/upload', (req, res) => {
 
       if (data) {
         // Store uploaded url.
-        this.s3Url = data.Location;
+        this.s3Key = data.Key;
         // Remove file from tmp dir after upload to s3.
         fs.unlink(filePath, err => {
           if (err) {
-            res.json({ unlinkerror: 'Error removing file from tmp location.' });
+            res.status(500).json({ unlinkerror: 'Error removing file from tmp location.' });
           }
         });
 
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
       estSalary: req.body.estSalary,
       jobAppUrl: req.body.jobAppUrl,
       empId: req.body.empId,
-      awsUploadUrl: this.s3Url
+      awsUploadKey: this.s3Key
     };
 
     const response = await new JobDescription(jobDesc).save();
