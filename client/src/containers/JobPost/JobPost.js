@@ -12,23 +12,27 @@ export default class Employer extends Component {
     infoCompleted: false,
     descriptionCompleted: false,
     descriptionDisabled: true,
-    empName: '',
-    empWebsite: '',
-    empHeadquarters: '',
-    empDescription: '',
+    name: '',
+    website: '',
+    headquarters: '',
+    description: '',
     jobTitle: '',
     estSalary: '',
     jobAppUrl: '',
-    empId: ''
+    empId: '',
+    errorFields: []
   };
 
   handleNextClick = async () => {
     const employerInfo = {
-      name: this.state.empName,
-      website: this.state.empWebsite,
-      headquarters: this.state.empHeadquarters,
-      description: this.state.empDescription
+      name: this.state.name,
+      website: this.state.website,
+      headquarters: this.state.headquarters,
+      description: this.state.description
     };
+
+    // Validate empty fields and display errors.
+    if (this.validateBlankFields(employerInfo)) return;
 
     try {
       const res = await axios.post('/api/employer', employerInfo);
@@ -45,7 +49,10 @@ export default class Employer extends Component {
   };
 
   handleFormInput = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      [event.target.name]: event.target.value,
+      errorFields: this.state.errorFields.filter(i => i !== event.target.name)
+    });
   };
 
   handleBackClick = () => {
@@ -60,6 +67,8 @@ export default class Employer extends Component {
       empId: this.state.empId
     };
 
+    if (this.validateBlankFields(jobDesc)) return;
+
     try {
       await axios.post('/api/job-description', jobDesc);
 
@@ -70,7 +79,25 @@ export default class Employer extends Component {
     }
   };
 
-  componentDidMount() {}
+  validateBlankFields = obj => {
+    const entries = Object.entries(obj);
+    let errorFields = [];
+    for (const [key, value] of entries) {
+      if (key !== 'estSalary' && value === '') {
+        errorFields.push(key);
+      }
+    }
+
+    if (errorFields.length > 0) {
+      this.setState({ errorFields });
+      return true;
+    }
+
+    return false;
+  };
+
+  // TODO: Add other field level validation here (valid url, etc)
+  handleBlur = event => {};
 
   render() {
     const steps = [
@@ -98,12 +125,18 @@ export default class Employer extends Component {
         <Container>
           <Step.Group items={steps} widths={2} style={{ marginBottom: 30 }} />
           {this.state.activeStep === 'info' ? (
-            <EmployerInfoForm onChange={this.handleFormInput} onClick={this.handleNextClick} />
+            <EmployerInfoForm
+              onChange={this.handleFormInput}
+              onClick={this.handleNextClick}
+              errorFields={this.state.errorFields}
+              onBlur={this.handleBlur}
+            />
           ) : (
             <JobDescForm
               onChange={this.handleFormInput}
               onBackClick={this.handleBackClick}
               onPostClick={this.handlePostClick}
+              errorFields={this.state.errorFields}
             />
           )}
         </Container>

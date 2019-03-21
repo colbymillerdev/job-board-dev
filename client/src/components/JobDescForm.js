@@ -1,19 +1,27 @@
 import React from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Label } from 'semantic-ui-react';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 
-const JobDescForm = ({ onChange, onBackClick, onPostClick }) => (
+const JobDescForm = ({ onChange, onBackClick, onPostClick, errorFields }) => (
   <Form>
     <Form.Group widths="equal">
-      <Form.Input fluid label="Job Title" placeholder="Job Title" name="jobTitle" onChange={onChange} />
-      <Form.Input fluid label="Estimated Salary (Optional)" placeholder="$$$" name="estSalary" onChange={onChange} />
+      <Form.Input
+        fluid
+        label="Job Title"
+        placeholder="Job Title"
+        name="jobTitle"
+        onChange={onChange}
+        error={errorFields.includes('jobTitle')}
+      />
+      <Form.Input fluid label="Estimated Salary (Optional)" placeholder="Salary" name="estSalary" onChange={onChange} />
       <Form.Input
         fluid
         label="Application URL"
         placeholder="Enter URL where candidate can apply"
         name="jobAppUrl"
         onChange={onChange}
+        error={errorFields.includes('jobAppUrl')}
       />
     </Form.Group>
     <FilePond server="/api/job-description/upload" />
