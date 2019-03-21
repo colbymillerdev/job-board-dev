@@ -3,13 +3,15 @@ const Schema = mongoose.Schema;
 
 const JobDescriptionSchema = new Schema({
   jobTitle: {
-    type: String
+    type: String,
+    required: true
   },
   estSalary: {
     type: String
   },
   jobAppUrl: {
-    type: String
+    type: String,
+    required: true
   },
   jobDescFile: {
     type: String
