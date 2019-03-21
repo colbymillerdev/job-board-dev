@@ -26,16 +26,25 @@ const SubHeader = styled.div`
   margin-bottom: 1em;
 `;
 
+const NoJobs = styled.div`
+  text-align: center;
+  font-size: 20px;
+  font-family: 'gill sans';
+`;
+
 export default class Home extends Component {
   state = {
     jobs: [],
-    employers: []
+    employers: [],
+    loading: false
   };
 
   async componentDidMount() {
+    // Temp way to hold loading state until redux is implemented.
+    this.setState({ loading: true });
     const res = await axios.get('/api/job-description');
     const empRes = await axios.get('/api/employer/');
-    this.setState({ jobs: res.data, employers: empRes.data });
+    this.setState({ jobs: res.data, employers: empRes.data, loading: false });
   }
 
   render() {
@@ -57,6 +66,14 @@ export default class Home extends Component {
           </Grid>
           <Segment inverted>
             <List animated divided inverted relaxed verticalAlign="middle" size="big">
+              {this.state.jobs.length === 0 && !this.state.loading && (
+                <NoJobs>
+                  No jobs to display{' '}
+                  <span role="img" aria-label="crying-face">
+                    😢
+                  </span>
+                </NoJobs>
+              )}
               {this.state.jobs.map(job => {
                 const emp = this.state.employers.find(e => e._id === job.empId);
                 return (

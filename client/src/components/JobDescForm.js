@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Label } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 
@@ -14,7 +14,7 @@ const JobDescForm = ({ onChange, onBackClick, onPostClick, errorFields }) => (
         onChange={onChange}
         error={errorFields.includes('jobTitle')}
       />
-      <Form.Input fluid label="Estimated Salary (Optional)" placeholder="Salary" name="estSalary" onChange={onChange} />
+      <Form.Input fluid label="Estimated Salary (Optional)" placeholder="$$$" name="estSalary" onChange={onChange} />
       <Form.Input
         fluid
         label="Application URL"
