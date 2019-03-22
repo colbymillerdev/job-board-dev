@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Container, Segment, List, Button, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import moment from 'moment';
+
+import { fetchEmployers, fetchJobDescriptions } from '../../actions/index';
 
 import JobListItem from '../../components/JobListItem';
 
@@ -32,19 +34,10 @@ const NoJobs = styled.div`
   font-family: 'gill sans';
 `;
 
-export default class Home extends Component {
-  state = {
-    jobs: [],
-    employers: [],
-    loading: false
-  };
-
-  async componentDidMount() {
-    // Temp way to hold loading state until redux is implemented.
-    this.setState({ loading: true });
-    const res = await axios.get('/api/job-description');
-    const empRes = await axios.get('/api/employer/');
-    this.setState({ jobs: res.data, employers: empRes.data, loading: false });
+class Home extends Component {
+  componentDidMount() {
+    this.props.fetchEmployers();
+    this.props.fetchJobDescriptions();
   }
 
   render() {
@@ -66,7 +59,7 @@ export default class Home extends Component {
           </Grid>
           <Segment inverted>
             <List animated divided inverted relaxed verticalAlign="middle" size="big">
-              {this.state.jobs.length === 0 && !this.state.loading && (
+              {this.props.jobDescriptions.length === 0 && !this.props.isLoading && (
                 <NoJobs>
                   No jobs to display{' '}
                   <span role="img" aria-label="crying-face">
@@ -74,8 +67,8 @@ export default class Home extends Component {
                   </span>
                 </NoJobs>
               )}
-              {this.state.jobs.map(job => {
-                const emp = this.state.employers.find(e => e._id === job.empId);
+              {this.props.jobDescriptions.map(job => {
+                const emp = this.props.employers.find(e => e._id === job.empId);
                 return (
                   <JobListItem
                     companyName={emp.name}
@@ -93,3 +86,14 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  employers: state.employers,
+  jobDescriptions: state.jobDescriptions,
+  isLoading: state.isLoading
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchEmployers, fetchJobDescriptions }
+)(Home);

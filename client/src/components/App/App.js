@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
 
 import './App.css';
 import NavMenu from '../Menu/NavMenu';
 import Home from '../../containers/Home/Home';
 import JobPost from '../../containers/JobPost/JobPost';
+import rootReducer from '../../reducers';
+
+const store = createStore(rootReducer, {}, applyMiddleware(reduxThunk));
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <Provider store={store}>
         <Router>
           <div>
             <NavMenu />
@@ -17,7 +23,7 @@ class App extends Component {
             <Route exact path="/employer/post-job" component={JobPost} />
           </div>
         </Router>
-      </div>
+      </Provider>
     );
   }
 }
