@@ -11,7 +11,7 @@
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Colby Miller",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "dependencies": {
     "aws-sdk": "^2.424.0",
     "body-parser": "^1.18.3",
