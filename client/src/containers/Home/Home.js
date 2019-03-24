@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Container, Segment, List, Button, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import moment from 'moment';
 
 import { fetchEmployers, fetchJobDescriptions } from '../../actions/index';
 
@@ -69,15 +68,7 @@ class Home extends Component {
               )}
               {this.props.jobDescriptions.map(job => {
                 const emp = this.props.employers.find(e => e._id === job.empId);
-                return (
-                  <JobListItem
-                    companyName={emp.name}
-                    jobTitle={job.jobTitle}
-                    postedDt={moment(job.createdAt).fromNow()}
-                    applyUrl={job.jobAppUrl}
-                    key={job._id}
-                  />
-                );
+                return <JobListItem job={job} emp={emp} key={job._id} />;
               })}
             </List>
           </Segment>

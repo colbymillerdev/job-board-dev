@@ -79,4 +79,14 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/:id', async (req, res) => {
+  try {
+    const jobDesc = await JobDescription.findById(req.params.id);
+
+    res.json(jobDesc);
+  } catch (err) {
+    res.status(404).json({ notfound: 'Job Description data can not be found.' });
+  }
+});
+
 module.exports = router;
