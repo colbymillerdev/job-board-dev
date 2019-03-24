@@ -35,8 +35,8 @@ const NoJobs = styled.div`
 `;
 
 class Home extends Component {
-  componentDidMount() {
-    this.props.fetchEmployers();
+  async componentDidMount() {
+    await this.props.fetchEmployers();
     this.props.fetchJobDescriptions();
   }
 
@@ -59,7 +59,7 @@ class Home extends Component {
           </Grid>
           <Segment inverted>
             <List animated divided inverted relaxed verticalAlign="middle" size="big">
-              {this.props.jobDescriptions.length === 0 && !this.props.isLoading && (
+              {!this.props.isLoading && this.props.jobDescriptions.length === 0 && (
                 <NoJobs>
                   No jobs to display{' '}
                   <span role="img" aria-label="crying-face">
