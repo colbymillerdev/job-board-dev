@@ -32,6 +32,7 @@ router.post('/upload', (req, res) => {
 
     s3.upload(params, (err, data) => {
       if (err) {
+        console.log(err);
         return res.status(500).json({ s3error: 'There was an error uploading the file to s3.' });
       }
 
@@ -41,6 +42,7 @@ router.post('/upload', (req, res) => {
         // Remove file from tmp dir after upload to s3.
         fs.unlink(filePath, err => {
           if (err) {
+            console.log(err);
             res.status(500).json({ unlinkerror: 'Error removing file from tmp location.' });
           }
         });
