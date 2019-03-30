@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const jobDesc = await JobDescription.find();
+    const jobDesc = await JobDescription.find().sort({ createdAt: -1 });
 
     res.json(jobDesc);
   } catch (err) {
