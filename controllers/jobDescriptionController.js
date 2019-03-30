@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
@@ -13,13 +11,14 @@ AWS.config.update({
 });
 const s3 = new AWS.S3();
 
-router.post('/upload', (req, res) => {
+exports.upload_job_description = (req, res) => {
   let uploadFile = req.files.filepond;
   const fileName = req.files.filepond.name;
   const filePath = `${__dirname}/tmp/job-description/${fileName}`;
 
   uploadFile.mv(filePath, err => {
     if (err) {
+      console.log(err);
       return res.status(500).json({ uploaderror: 'There was an error uploading the file.' });
     }
 
@@ -51,9 +50,9 @@ router.post('/upload', (req, res) => {
       }
     });
   });
-});
+};
 
-router.post('/', async (req, res) => {
+exports.create_job_posting = async (req, res) => {
   try {
     const jobDesc = {
       jobTitle: req.body.jobTitle,
@@ -69,9 +68,9 @@ router.post('/', async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: 'There was an issue saving the job description.' });
   }
-});
+};
 
-router.get('/', async (req, res) => {
+exports.get_job_postings = async (req, res) => {
   try {
     const jobDesc = await JobDescription.find().sort({ createdAt: -1 });
 
@@ -79,9 +78,9 @@ router.get('/', async (req, res) => {
   } catch (err) {
     res.status(404).json({ notfound: 'Job Description data can not be found.' });
   }
-});
+};
 
-router.get('/:id', async (req, res) => {
+exports.get_job_posting = async (req, res) => {
   try {
     const jobDesc = await JobDescription.findById(req.params.id);
 
@@ -89,6 +88,4 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     res.status(404).json({ notfound: 'Job Description data can not be found.' });
   }
-});
-
-module.exports = router;
+};

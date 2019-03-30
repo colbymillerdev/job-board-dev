@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressFileUpload = require('express-fileupload');
 
-const employer = require('./routes/employer');
-const jobDescription = require('./routes/jobDescription');
+const employerRoutes = require('./routes/employerRoutes');
+const jobDescriptionRoutes = require('./routes/jobDescriptionRoutes');
 
 const app = express();
 
@@ -25,8 +25,8 @@ mongoose
   .catch(err => console.log(err));
 
 // Routes
-app.use('/api/employer', employer);
-app.use('/api/job-description', jobDescription);
+app.use('/api/employer', employerRoutes);
+app.use('/api/job-description', jobDescriptionRoutes);
 
 const port = process.env.PORT || 5000;
 
