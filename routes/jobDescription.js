@@ -38,7 +38,7 @@ router.post('/upload', (req, res) => {
 
       if (data) {
         // Store uploaded url.
-        this.s3Key = data.Key;
+        this.s3Url = data.Location;
         // Remove file from tmp dir after upload to s3.
         fs.unlink(filePath, err => {
           if (err) {
@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
       estSalary: req.body.estSalary,
       jobAppUrl: req.body.jobAppUrl,
       empId: req.body.empId,
-      awsUploadKey: this.s3Key
+      awsUploadUrl: this.s3Url
     };
 
     const response = await new JobDescription(jobDesc).save();
