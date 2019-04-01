@@ -4,7 +4,7 @@
   "description": "Remote work job board for Software Developers.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test nyc --reporter=text mocha --exit",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
@@ -16,11 +16,16 @@
     "aws-sdk": "^2.424.0",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "express-fileupload": "^1.1.3-alpha.1",
     "mongoose": "^5.4.18"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "chai": "^4.2.0",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0",
+    "supertest": "^4.0.2"
   }
 }
