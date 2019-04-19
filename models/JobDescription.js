@@ -26,6 +26,10 @@ const JobDescriptionSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  numOfClicks: {
+    type: Number,
+    default: 0
   }
 });
 

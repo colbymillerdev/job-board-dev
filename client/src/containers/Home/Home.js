@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Container, Segment, List, Button, Grid } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import { fetchEmployers, fetchJobDescriptions } from '../../actions/index';
 
@@ -39,6 +40,14 @@ class Home extends Component {
     this.props.fetchJobDescriptions();
   }
 
+  handleClicks = async id => {
+    try {
+      await axios.put(`/api/job-description/${id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   render() {
     return (
       <div>
@@ -68,7 +77,7 @@ class Home extends Component {
               )}
               {this.props.jobDescriptions.map(job => {
                 const emp = this.props.employers.find(e => e._id === job.empId);
-                return <JobListItem job={job} emp={emp} key={job._id} />;
+                return <JobListItem job={job} emp={emp} key={job._id} handleClicks={this.handleClicks} />;
               })}
             </List>
           </Segment>

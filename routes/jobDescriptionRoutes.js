@@ -9,6 +9,9 @@ router
   .route('/')
   .get(jobDescriptionController.get_job_postings)
   .post(jobDescriptionController.create_job_posting);
-router.route('/:id').get(jobDescriptionController.get_job_posting);
+router
+  .route('/:id')
+  .get(jobDescriptionController.get_job_posting)
+  .put(jobDescriptionController.track_job_clicks);
 
 module.exports = router;

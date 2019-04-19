@@ -89,3 +89,15 @@ exports.get_job_posting = async (req, res) => {
     res.status(404).json({ notfound: 'Job Description data can not be found.' });
   }
 };
+
+exports.track_job_clicks = async (req, res) => {
+  try {
+    const jobDesc = await JobDescription.findById(req.params.id);
+    jobDesc.numOfClicks++;
+    await JobDescription(jobDesc).save();
+
+    res.json.status(200).json({ success: 'Job clicks were increased successfully.' });
+  } catch (err) {
+    res.status(500).json({ error: 'There was an issue increasing the number of clicks' });
+  }
+};
