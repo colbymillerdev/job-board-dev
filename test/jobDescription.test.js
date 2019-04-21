@@ -39,6 +39,13 @@ describe('GET /api/job-description/:id', () => {
 });
 
 describe('POST /api/job-description', () => {
+  beforeEach(() => {
+    // Remove record before recreating.
+    JobDescription.find({ jobTitle: 'Mock3' })
+      .deleteOne()
+      .exec();
+  });
+
   const data = {
     jobTitle: 'Mock3',
     jobAppUrl: 'mock3.com',
@@ -62,5 +69,27 @@ describe('POST /api/job-description', () => {
       .post(`${URL_PREFIX}/`)
       .send(badData)
       .expect(400, done);
+  });
+
+  // TODO: Delete created record afterEach insteaf of before?
+});
+
+describe('PUT /api/job-description/:id', () => {
+  it('Should increase number of clicks for selected job', async () => {
+    const job = await JobDescription.findById('5ca18136faef881553712c4a');
+    const currentNumOfClicks = job.numOfClicks;
+
+    await request.put(`${URL_PREFIX}/5ca18136faef881553712c4a`).expect(200);
+
+    await request
+      .get(`${URL_PREFIX}/5ca18136faef881553712c4a`)
+      .expect(res => {
+        expect(res.body.numOfClicks).to.equal(currentNumOfClicks + 1);
+      })
+      .expect(200);
+  });
+
+  it('Should return not found if no id exists', done => {
+    request.get(`${URL_PREFIX}/nonexistingid`).expect(404, done);
   });
 });

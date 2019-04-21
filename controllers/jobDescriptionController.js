@@ -96,7 +96,7 @@ exports.track_job_clicks = async (req, res) => {
     jobDesc.numOfClicks++;
     await JobDescription(jobDesc).save();
 
-    res.json.status(200).json({ success: 'Job clicks were increased successfully.' });
+    res.status(200).json({ success: 'Job clicks were increased successfully.' });
   } catch (err) {
     res.status(500).json({ error: 'There was an issue increasing the number of clicks' });
   }
