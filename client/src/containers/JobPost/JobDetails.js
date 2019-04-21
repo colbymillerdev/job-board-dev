@@ -23,7 +23,7 @@ class JobDetails extends Component {
           <div>
             <BackLink to={'/'}>Back to Job Listings</BackLink>
             <Header>{this.props.jobDescription.jobTitle}</Header>
-            <SubHeader>Posted {moment(this.props.jobDescription.createdAt).fromNow()}</SubHeader>
+            <SubHeader>Posted: {moment(this.props.jobDescription.createdAt).format('M/D/YYYY')}</SubHeader>
             <CompanyName>{this.props.employer.name}</CompanyName>
             <CompanyLocation>Headquarters: {this.props.employer.headquarters}</CompanyLocation>
             <CompanyWebsite href={`https://${this.props.employer.website}`} target="_blank">

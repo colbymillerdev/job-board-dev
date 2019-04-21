@@ -76,11 +76,14 @@ describe('POST /api/job-description', () => {
 
 describe('PUT /api/job-description/:id', () => {
   it('Should increase number of clicks for selected job', async () => {
+    // Get current number of clicks for specified ID.
     const job = await JobDescription.findById('5ca18136faef881553712c4a');
     const currentNumOfClicks = job.numOfClicks;
 
+    // Call endpoint to increase number of clicks.
     await request.put(`${URL_PREFIX}/5ca18136faef881553712c4a`).expect(200);
 
+    // Get the new number of clicks and ensure it increased by 1.
     await request
       .get(`${URL_PREFIX}/5ca18136faef881553712c4a`)
       .expect(res => {
