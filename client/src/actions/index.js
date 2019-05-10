@@ -45,6 +45,14 @@ export const fetchJobDescription = id => async dispatch => {
   }
 };
 
+export const deleteEmployer = id => async dispatch => {
+  try {
+    dispatch(isLoading(true));
+    await axios.delete(`/api/employer/${id}`);
+    dispatch(isLoading(false));
+  } catch (err) {}
+};
+
 // Action to determine if item is loading.
 export function isLoading(bool) {
   return {

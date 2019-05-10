@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Step, Container } from 'semantic-ui-react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
 import EmployerInfoForm from '../../components/EmployerInfoForm';
 import JobDescForm from '../../components/JobDescForm';
+import { deleteEmployer } from '../../actions';
 
-export default class Employer extends Component {
+class Employer extends Component {
   state = {
     activeStep: 'info',
     infoCompleted: false,
@@ -22,6 +24,10 @@ export default class Employer extends Component {
     empId: '',
     errorFields: []
   };
+
+  componentWillUnmount() {
+    if (this.state.activeStep === 'description') this.props.deleteEmployer(this.state.empId);
+  }
 
   handleNextClick = async () => {
     const employerInfo = {
@@ -144,6 +150,11 @@ export default class Employer extends Component {
     );
   }
 }
+
+export default connect(
+  null,
+  { deleteEmployer }
+)(Employer);
 
 const Wrapper = styled.div`
   margin-top: 5em;
