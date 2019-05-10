@@ -36,3 +36,18 @@ exports.get_employer = async (req, res) => {
     res.status(404).json({ notfound: 'Employer data can not be found.' });
   }
 };
+
+exports.delete_employer = async (req, res) => {
+  try {
+    const employer = await Employer.findById(req.params.id);
+
+    if (employer) {
+      employer.remove();
+    }
+
+    res.status(200).json({ success: 'The employer was removed successfully.' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'There was an issue deleting the employer.' });
+  }
+};

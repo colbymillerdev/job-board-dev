@@ -8,6 +8,9 @@ router
   .route('/')
   .get(employerController.get_employers)
   .post(employerController.create_employer);
-router.route('/:id').get(employerController.get_employer);
+router
+  .route('/:id')
+  .get(employerController.get_employer)
+  .delete(employerController.delete_employer);
 
 module.exports = router;

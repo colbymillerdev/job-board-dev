@@ -73,3 +73,18 @@ describe('POST /api/employer', () => {
       .expect(400, done);
   });
 });
+
+describe('DELETE /api/employer/:id', () => {
+  const data = {
+    name: 'TestDelete',
+    website: 'TestDelete.com',
+    headquarters: 'TestDelete',
+    description: 'TestDelete'
+  };
+
+  it('Should delete an employer', async () => {
+    const empRes = await new Employer(data).save();
+
+    await request.delete(`${URL_PREFIX}/${empRes._id}`).expect(200);
+  });
+});
