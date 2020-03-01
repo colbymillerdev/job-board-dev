@@ -26,7 +26,8 @@ class Employer extends Component {
   };
 
   componentWillUnmount() {
-    if (this.state.activeStep === 'description') this.props.deleteEmployer(this.state.empId);
+    const { activeStep, descriptionCompleted } = this.state;
+    if (activeStep === 'description' && !descriptionCompleted) this.props.deleteEmployer(this.state.empId);
   }
 
   handleNextClick = async () => {
@@ -151,10 +152,7 @@ class Employer extends Component {
   }
 }
 
-export default connect(
-  null,
-  { deleteEmployer }
-)(Employer);
+export default connect(null, { deleteEmployer })(Employer);
 
 const Wrapper = styled.div`
   margin-top: 5em;
